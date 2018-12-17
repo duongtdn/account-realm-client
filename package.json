@@ -1,0 +1,22 @@
+{
+  "name": "account-realm-client",
+  "version": "1.0.0",
+  "description": "client side scripts to authenticate with account-realm provider",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duongtdn/account-realm-client.git"
+  },
+  "keywords": [
+    "account"
+  ],
+  "author": "duongtdn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/duongtdn/account-realm-client/issues"
+  },
+  "homepage": "https://github.com/duongtdn/account-realm-client#readme"
+}

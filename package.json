@@ -4,7 +4,8 @@
   "description": "client side scripts to authenticate with account-realm provider",
   "main": "src/main.js",
   "scripts": {
-    "test": "npm test"
+    "clearn": "rm -rf",
+    "build": "npm run clearn && babel"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/duongtdn/account-realm-client/issues"
   },
-  "homepage": "https://github.com/duongtdn/account-realm-client#readme"
+  "homepage": "https://github.com/duongtdn/account-realm-client#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "babel-loader": "^8.0.4"
+  }
 }

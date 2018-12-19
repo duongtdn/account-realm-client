@@ -1,11 +1,18 @@
 "use strict"
 
+import { isObject } from './util'
+import AuthProvider from './auth-provider'
+
 class AccountClient {
-  constructor(props) {   
+  constructor(props) {
     this._props = {
       cookie: false
     }
     this.set(props)
+    if (!this._props.baseurl) {
+      throw new Error('missing prop: baseurl')
+    }
+    this.auth = new AuthProvider({ baseurl: this._props.baseurl })
     this._eventHandlers = {}
   }
 
@@ -41,7 +48,7 @@ class AccountClient {
 
   sso() {
     this.set({sso: true}) // enable sso flag sothat single sign-out will be used when user signed out
-    this._getTokenFromAuthProvider( (err, data) => {
+    this.auth.get('session', (err, data) => {
       if (err) {
         if (err.code === 404) {
           this._signoutLocally()
@@ -58,13 +65,13 @@ class AccountClient {
   }
 
   signup() {
-    this._getAuthenPageFromAuthProvider({ defaultView: 'signup' }, (err, user) => {
+    this.auth.get('users/new', (err, user) => {
 
     })
   }
 
   signin() {
-    this._getAuthenPageFromAuthProvider({ defaultView: 'signin' }, (err, user) => {
+    this.auth.get('session/new', (err, user) => {
 
     })
   }
@@ -72,7 +79,9 @@ class AccountClient {
   signout() {
     this._signoutLocally()
     if (this.get('sso')) {
-      this._clearTokenFromAuthProvider()
+      this.auth.delete('session', (err) => {
+        
+      })
     }
   }
 
@@ -110,22 +119,6 @@ class AccountClient {
 
   }
 
-  _getTokenFromAuthProvider(done) {
-
-  }
-
-  _clearTokenFromAuthProvider() {
-
-  }
-
-  _getAuthenPageFromAuthProvider({defaultView = 'signin', template = 'default', method = 'popup'}, callback) {
-
-  }
-
-}
-
-function isObject(obj) {
-  return Object.prototype.toString.call(obj) === "[object Object]"
 }
 
 module.exports = AccountClient

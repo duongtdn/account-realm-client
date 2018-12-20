@@ -3,7 +3,7 @@
 import { isObject } from './util'
 import AuthProvider from './auth-provider'
 
-class AccountClient {
+export default class AccountClient {
   constructor(props) {
     this._props = {
       cookie: false
@@ -120,5 +120,3 @@ class AccountClient {
   }
 
 }
-
-module.exports = AccountClient

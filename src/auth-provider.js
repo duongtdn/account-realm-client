@@ -2,7 +2,7 @@
 
 import { isObject, isFunction } from './util'
 
-class AuthProvider {
+export default class AuthProvider {
   constructor({ baseurl }) {
     this.baseurl = baseurl.replace(/\/+$/,'')
   }
@@ -42,4 +42,4 @@ class AuthProvider {
 
 }
 
-module.exports = AuthProvider
+// module.exports = AuthProvider

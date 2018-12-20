@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "clearn": "rm -rf dist/",
-    "build": "npm run clearn && babel src --out-dir dist --source-maps"
+    "build": "npm run clearn && babel src --out-dir dist --source-maps",
+    "test": "npm run build && node test/test",
+    "test:nobuild": "node test/test"
   },
   "repository": {
     "type": "git",

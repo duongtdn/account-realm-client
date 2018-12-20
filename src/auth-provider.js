@@ -4,26 +4,40 @@ import { isObject, isFunction } from './util'
 
 class AuthProvider {
   constructor({ baseurl }) {
-    this.baseurl = baseurl
+    this.baseurl = baseurl.replace(/\/+$/,'')
   }
 
-  get(path, query, done) {
-    let _endpoint = `${this.baseurl}/${path}`
-    let _query = ''
-    let _done = null
+  get(path, query, done) {    
     if (isFunction(query)) {
-      _done = query
+      done = query
     }
-    if (isObject(query)) {
-      _query = '?'
-      for (let t in query) {
-        // _query += `${t}=${query}`
-      }
-    }
+    const url = this._constructURL(path, query)
+
+    console.log(url)
+    console.log(done)
   }
 
   delete(path, done) {
-    
+    if (isFunction(query)) {
+      done = query
+    }
+    const url = this._constructURL(path, query)
+
+    console.log(url)
+    console.log(done)
+  }
+
+  _constructURL(path, query) {
+    if (isObject(query)) {
+      let _query = '?'
+      for (let t in query) {
+        _query += `${t}=${query[t]}&`
+      }
+      _query = _query.replace(/&+$/,"")
+      return `${this.baseurl}/${path}${_query}`
+    } else {
+      return `${this.baseurl}/${path}`
+    }    
   }
 
 }

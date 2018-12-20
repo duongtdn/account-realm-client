@@ -25,7 +25,7 @@ if (args.length > 0) {
 //   console.log(data)
 // })
 
-const AccountClient = require("../dist/account-client")
+import AccountClient  from "../src/account-client"
 
 const acc = new AccountClient({
   baseurl: 'https://account-realm.com'

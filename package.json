@@ -6,7 +6,8 @@
   "scripts": {
     "clearn": "rm -rf dist/",
     "build": "npm run clearn && babel src --out-dir dist --source-maps",
-    "test": "webpack-dev-server --config webpack.tests.config.js  --port 3100 --host 0.0.0.0 --watch-poll"
+    "test": "webpack-dev-server --config webpack.tests.config.js  --port 3300 --host 0.0.0.0 --watch-poll",
+    "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll"
   },
   "repository": {
     "type": "git",

@@ -2,9 +2,16 @@
 
 import { isObject, isFunction } from './util'
 
+import { get } from './xhttp'
+
 export default class AuthProvider {
   constructor({ baseurl }) {
     this.baseurl = baseurl.replace(/\/+$/,'')
+    this._lazyFn = [];
+    document.addEventListener("DOMContentLoaded", (event) => {
+      this._domReady = true
+      this._lazyFn.forEach(f => f.fn(...f.args))
+    });
   }
 
   get(path, query, done) {    
@@ -12,9 +19,14 @@ export default class AuthProvider {
       done = query
     }
     const url = this._constructURL(path, query)
-
-    console.log(url)
-    console.log(done)
+    this._lazyExecute(this._openIframe, url,)
+    window.addEventListener("message", receiveMessage.bind(this), false);    
+    function receiveMessage (event) {
+      if (event.origin !== this.baseurl)
+        return;
+      const data = event.data
+      console.log(data)
+    }    
   }
 
   delete(path, done) {
@@ -40,6 +52,21 @@ export default class AuthProvider {
     }    
   }
 
-}
+  _openIframe(url) {
+    const body = document.getElementsByTagName('body')[0]
+    const iframe = document.createElement('iframe')
+    iframe.src = url
+    iframe.setAttribute('id', `__${this.baseurl}__`)
+    iframe.style.display = 'none'
+    body.appendChild(iframe)
+  }
 
-// module.exports = AuthProvider
+  _lazyExecute(fn, ...args) {
+    if (this._domReady) {
+      fn(...args)
+    } else {
+      this._lazyFn.push({fn: fn.bind(this), args})
+    }
+  }
+
+}

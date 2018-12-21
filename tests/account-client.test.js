@@ -9,26 +9,26 @@ if (args.length > 0) {
 }
 
 
-// const AuthProvider = require("../dist/auth-provider")
+import AuthProvider  from "../src/auth-provider"
 
-// const auth = new AuthProvider({
-//   baseurl: 'https://account-realm.com'
-// })
+const auth = new AuthProvider({
+  baseurl: 'http://localhost:3100'
+})
 
-// // auth.get('session/new', {template: 'default', theme: 'material'})
+// auth.get('session/new', {template: 'default', theme: 'material'})
 
-// // auth.get('session/new', function(err, data) {
-// //   console.log(data)
-// // })
-
-// auth.get('session/new', {template: 'default', theme: 'material'}, function(err, data) {
+// auth.get('session/new', function(err, data) {
 //   console.log(data)
 // })
 
-import AccountClient  from "../src/account-client"
-
-const acc = new AccountClient({
-  baseurl: 'https://account-realm.com'
+auth.get('apps/tests/session', {template: 'default', theme: 'material'}, function(err, data) {
+  console.log(data)
 })
 
-acc.sso()
+// import AccountClient  from "../src/account-client"
+
+// const acc = new AccountClient({
+//   baseurl: 'https://account-realm.com'
+// })
+
+// acc.sso()

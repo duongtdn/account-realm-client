@@ -40,6 +40,7 @@ export default class AuthProvider {
   }
 
   _constructURL(path, query) {
+    path = path.replace(/^\/+|\/+$/gm,'').replace(/\/\//gm,'/')    
     if (isObject(query)) {
       let _query = '?'
       for (let t in query) {

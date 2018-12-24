@@ -4,7 +4,7 @@ import { assert } from 'chai'
 
 import util from '../src/util'
 
-describe('Test util lib', () => {
+describe('Test util.js', () => {
 
   describe('Type check', function() {
     const obj = {

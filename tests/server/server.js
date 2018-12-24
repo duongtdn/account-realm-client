@@ -15,10 +15,24 @@ app.get('/apps/:app/session', function (req, res) {
   console.log(`Request from app: ${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } );
   if (origin[app]) {
-    res.end(html({targetOrigin: origin[app], status: 200, message: 'ok', script: "/assets/client.js"}))
+    res.end(html({targetOrigin: origin[app], status: 200, message: {session:{user: 'awesome', token: 'secret'}}, script: "/assets/client.js"}))
   } else {
-    res.end(html({targetOrigin: origin[app], status: 403, message: 'noapp', script: "/assets/client.js"}))
+    res.end(html({targetOrigin: origin[app], status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
   } 
+})
+
+app.get('/apps/:app/auth-provider-with-query', function (req, res) {
+  const app = req.params.app
+  res.end(html({targetOrigin: origin[app], status: 200, message: {query: req.query}, script: "/assets/client.js"}))
+})
+
+app.get('/apps/:app/auth-provider-without-query', function (req, res) {
+  const app = req.params.app
+  if (req.query && Object.keys(req.query).length > 0) {
+    res.end(html({targetOrigin: origin[app], status: 200, message: {query: req.query}, script: "/assets/client.js"}))
+  } else {
+    res.end(html({targetOrigin: origin[app], status: 200, message: {query: null}, script: "/assets/client.js"}))
+  }
 })
 
 app.listen(3100, function (err) {
@@ -55,9 +69,9 @@ function html ({targetOrigin, status, message, script}) {
       </div>
   
       <script>
-        var targetOrigin = "${targetOrigin}"
-        var status = "${status}"
-        var message = "${message}"
+        var targetOrigin = '${targetOrigin}'
+        var status = '${status}'
+        var message = '${JSON.stringify(message)}'
       </script>
   
     </body>

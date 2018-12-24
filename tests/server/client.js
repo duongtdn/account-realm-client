@@ -10,13 +10,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function postMessage() {
   if (window.parent) {
     var target = window.parent
-    if (status == 200) {
-      target.postMessage({status: status, session: {user: 'awesome', token: 'secure-token'}}, targetOrigin)
+    var obj = JSON.parse(message)
+    var msg = { status: status }
+    for (let k in obj) {
+      msg[k] = obj[k]
+    }
+    if (status == 200 || status == 404) {
+      target.postMessage(msg, targetOrigin)
     } else if (status == 403) {
-      target.postMessage({status: status, message: message}, "*")
+      target.postMessage(msg, "*")
       throw new Error('403 Forbidden')
-    } else if (status == 404) {
-      target.postMessage({status: status, message: message}, targetOrigin)
     }
   }
 }

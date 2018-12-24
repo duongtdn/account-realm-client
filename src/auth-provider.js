@@ -19,13 +19,13 @@ export default class AuthProvider {
       done = query
     }
     const url = this._constructURL(path, query)
-    this._lazyExecute(this._openIframe, url,)
+    this._lazyExecute(this._openIframe, url)
     window.addEventListener("message", receiveMessage.bind(this), false);    
     function receiveMessage (event) {
       if (event.origin !== this.baseurl)
         return;
       const data = event.data
-      console.log(data)
+      done && done(data)
     }    
   }
 

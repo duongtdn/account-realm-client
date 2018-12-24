@@ -56,9 +56,8 @@ export default class AccountClient {
           console.log(err)
         }
       } else {
-        this._storeUser(data.user)
-        this._setLocalToken(data.token)
-        this._setCookie(data.token)
+        this._setLocalSession(data.session)
+        this._setCookie(data.session)
       }
     })
     return this
@@ -86,15 +85,15 @@ export default class AccountClient {
   }
 
 
-  _getLocalToken() {
+  _getLocalSession() {
 
   }
 
-  _setLocalToken() {
+  _setLocalSession() {
 
   }
 
-  _clearLocalToken() {
+  _clearLocalSession() {
 
   }
 
@@ -111,12 +110,9 @@ export default class AccountClient {
   }
 
   _signoutLocally() {
-    this._clearLocalToken()._clearCookie()
+    this._clearLocalSession()._clearCookie()
     return this
   }
 
-  _storeUser() {
-
-  }
 
 }

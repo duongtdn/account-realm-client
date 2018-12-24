@@ -7,16 +7,16 @@ const origin = {
 const express = require('express')
 
 const app = express()
-app.use('/assets', express.static('tests'))
+app.use('/assets', express.static('tests/server'))
 
 app.get('/apps/:app/session', function (req, res) {
   const app = req.params.app
   console.log(`Request from app: ${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } );
   if (origin[app]) {
-    res.end(html({targetOrigin: origin[app], status: 200, message: 'ok', script: "/assets/auth-client.js"}))
+    res.end(html({targetOrigin: origin[app], status: 200, message: 'ok', script: "/assets/client.js"}))
   } else {
-    res.end(html({targetOrigin: origin[app], status: 403, message: 'noapp', script: "/assets/auth-client.js"}))
+    res.end(html({targetOrigin: origin[app], status: 403, message: 'noapp', script: "/assets/client.js"}))
   } 
 })
 

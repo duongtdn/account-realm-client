@@ -1,7 +1,8 @@
 "use strict"
 
 const origin = {
-  test: 'http://localhost:3200',
+  dev: 'http://localhost:3200',
+  test: 'http://localhost:3300',
 }
 
 const express = require('express')

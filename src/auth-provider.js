@@ -53,20 +53,33 @@ export default class AuthProvider {
     }    
   }
 
-  _openIframe(url) {
-    const body = document.getElementsByTagName('body')[0]
+  _openIframe(url) {   
+    let div = document.getElementById(`__${this.baseurl}__container__`)
+    console.log(div)
+    if (!div) {
+      console.log('create div')
+      div = document.createElement('div')
+      div.setAttribute('id', `__${this.baseurl}__container__`)
+      document.getElementsByTagName('body')[0].appendChild(div)
+    }
     const iframe = document.createElement('iframe')
     iframe.src = url
-    iframe.setAttribute('id', `__${this.baseurl}__`)
+    iframe.setAttribute('id', `__${this.baseurl}__iframe__`)
     iframe.style.display = 'none'
-    body.appendChild(iframe)
+    div.appendChild(iframe)
+  }
+
+  _closeIframe() {
+    const div = document.getElementById(`__${this.baseurl}__container__`)
+    div.innerHTML = ''
   }
 
   _lazyExecute(fn, ...args) {
+    fn = fn.bind(this)
     if (this._domReady) {
       fn(...args)
     } else {
-      this._lazyFn.push({fn: fn.bind(this), args})
+      this._lazyFn.push({fn, args})
     }
   }
 

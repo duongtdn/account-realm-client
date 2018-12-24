@@ -12,11 +12,11 @@ app.use('/assets', express.static('tests'))
 app.get('/apps/:app/session', function (req, res) {
   const app = req.params.app
   console.log(`Request from app: ${app}`)
+  res.writeHead( 200, { "Content-Type": "text/html" } );
   if (origin[app]) {
-    res.writeHead( 200, { "Content-Type": "text/html" } );
-    res.end(html({targetOrigin: origin[app], script: "/assets/auth-client.js"}))
+    res.end(html({targetOrigin: origin[app], status: 200, message: 'ok', script: "/assets/auth-client.js"}))
   } else {
-    res.status(404).send('404')
+    res.end(html({targetOrigin: origin[app], status: 403, message: 'noapp', script: "/assets/auth-client.js"}))
   } 
 })
 
@@ -24,7 +24,7 @@ app.listen(3100, function (err) {
   console.log('Auth server is running at 3100')
 })
 
-function html ({targetOrigin, script}) {
+function html ({targetOrigin, status, message, script}) {
   return `
   <!DOCTYPE html>
   <html>
@@ -55,6 +55,8 @@ function html ({targetOrigin, script}) {
   
       <script>
         var targetOrigin = "${targetOrigin}"
+        var status = "${status}"
+        var message = "${message}"
       </script>
   
     </body>

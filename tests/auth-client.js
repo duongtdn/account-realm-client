@@ -4,15 +4,19 @@ console.log('# Auth: script loaded ')
 
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log('# Auth: document loaded')
-  ping() 
+  postMessage() 
 });
 
-function ping() {
+function postMessage() {
   if (window.parent) {
-    const target = window.parent
-    // console.log('Target is: ')
-    // console.log(target)
-    // // console.log(targetOrigin)
-    target.postMessage({provider: 'realm', user: 'awesome', token: 'secure-token'}, targetOrigin)
+    var target = window.parent
+    if (status == 200) {
+      target.postMessage({status: status, session: {user: 'awesome', token: 'secure-token'}}, targetOrigin)
+    } else if (status == 403) {
+      target.postMessage({status: status, message: message}, "*")
+      throw new Error('403 Forbidden')
+    } else if (status == 404) {
+      target.postMessage({status: status, message: message}, targetOrigin)
+    }
   }
 }

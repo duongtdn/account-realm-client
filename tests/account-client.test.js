@@ -21,7 +21,7 @@ const auth = new AuthProvider({
 //   console.log(data)
 // })
 
-auth.get('apps/tests/session', {template: 'default', theme: 'material'}, function(err, data) {
+auth.get('apps/test/session', {template: 'default', theme: 'material'}, function(data) {
   console.log(data)
 })
 

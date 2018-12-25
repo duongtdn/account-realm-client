@@ -18,6 +18,7 @@ export default class AuthProvider {
         return
       const data = event.data
       this._done && this._done(data)
+      this._closeIframe()
     }, false)
   }
 

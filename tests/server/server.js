@@ -14,7 +14,7 @@ const app = express()
 app.use(cookieParser())
 app.use('/assets', express.static('tests/server'))
 
-app.get('/realm/apps/:app/session/new/:uid', function(req, res) {
+app.get('/:realm/apps/:app/session/new/:uid', function(req, res) {
   const uid = req.params.uid
   const clientId = Math.random().toString(36).substr(2,9)
   const session = { uid, clientId }
@@ -25,7 +25,7 @@ app.get('/realm/apps/:app/session/new/:uid', function(req, res) {
   console.log(`Created new session uid: ${uid}, clientId: ${clientId}`)
 })
 
-app.get('/realm/apps/:app/session', function (req, res) {
+app.get('/:realm/apps/:app/session', function (req, res) {
   const app = req.params.app
   console.log(`Request from app: ${app}`)
   const cookies = req.cookies  

@@ -57,13 +57,10 @@ export default class AccountClient {
     this.auth.get(`${this.get('realm')}/apps/${this.get('app')}/session`, (data) => {
       if (data && data.status == 200) {
         this._setLocalSession(data.session)
-        this._setCookie(data.session)
-        console.log(data.session)
         return
       }
       if (data && data.status == 404) {
-        console.log(data)
-        this._signoutLocally()
+        this.signout()
         return
       }
     })
@@ -83,43 +80,25 @@ export default class AccountClient {
   }
 
   signout() {
-    this._signoutLocally()
+    this._clearLocalSession()
     if (this.get('sso')) {
-      this.auth.delete('session', (err) => {
-        
-      })
+      this._clearCookie('session')
     }
   }
 
-
-  _getLocalSession() {
-
+  _setLocalSession(session) {
+    this._props.user = session.user
+    this._props.token = session.token
   }
 
-  _setLocalSession() {
-
+  _setCookie(cname, cvalue, exdays) {
+    let expires = exdays ? `expires=${exdays}` : '';
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   }
 
-  _clearLocalSession() {
-    return this
+  _clearCookie(cname) {
+    const expires = 'Thu, 01 Jan 1970 00:00:00 UTC';
+    this._setCookie(cname, '', expires)
   }
-
-  _getCookie() {
-
-  }
-
-  _setCookie() {
-
-  }
-
-  _clearCookie() {
-
-  }
-
-  _signoutLocally() {
-    this._clearLocalSession()._clearCookie()
-    return this
-  }
-
 
 }

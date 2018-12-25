@@ -28,18 +28,25 @@ app.get('/apps/:app/session/new/:uid', function(req, res) {
 app.get('/apps/:app/session', function (req, res) {
   const app = req.params.app
   console.log(`Request from app: ${app}`)
-  const cookies = req.cookies
-  console.log(cookies)  
+  const cookies = req.cookies  
   res.writeHead( 200, { "Content-Type": "text/html" } );
-  if (origin[app]) {
-    if (cookies && cookies.session) {
-      res.end(html({targetOrigin: origin[app], status: 200, message: {session:{user: 'awesome', token: 'secret'}}, script: "/assets/client.js"}))
-    } else {
-      res.end(html({targetOrigin: origin[app], status: 404, message: {error:'nosession'}, script: "/assets/client.js"}))  
-    }    
-  } else {
+  if (!origin[app]) {
     res.end(html({targetOrigin: origin[app], status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
-  } 
+    return
+  }
+  if (!cookies || !cookies.session) {
+    res.end(html({targetOrigin: origin[app], status: 404, message: {error:'nosession'}, script: "/assets/client.js"}))  
+    return
+  }
+  
+  const session = JSON.parse(cookies.session)
+  if ( sessions.some(ses => ses.uid === session.uid && ses.clientId === session.clientId) ) {
+    res.end(html({targetOrigin: origin[app], status: 200, message: {session:{user: session.uid, token: 'secret'}}, script: "/assets/client.js"}))
+  } else {
+    // expires session
+    res.end(html({targetOrigin: origin[app], status: 404, message: {error:'expired'}, script: "/assets/client.js"}))
+  }
+  
 })
 
 app.get('/apps/:app/auth-provider-with-query', function (req, res) {

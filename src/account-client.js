@@ -12,6 +12,12 @@ export default class AccountClient {
     if (!this._props.baseurl) {
       throw new Error('missing prop: baseurl')
     }
+    if (!this._props.realm) {
+      throw new Error('missing prop: realm')
+    }
+    if (!this._props.app) {
+      throw new Error('missing prop: app')
+    }
     this.auth = new AuthProvider({ baseurl: this._props.baseurl })
     this._eventHandlers = {}
   }

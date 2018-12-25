@@ -9,26 +9,12 @@ if (args.length > 0) {
 }
 
 
-import AuthProvider  from "../src/auth-provider"
+import AccountClient  from "../src/account-client"
 
-const auth = new AuthProvider({
+const acc = new AccountClient({
+  realm: 'realm',
+  app: 'dev',
   baseurl: 'http://localhost:3100'
 })
 
-// auth.get('session/new', {template: 'default', theme: 'material'})
-
-// auth.get('session/new', function(err, data) {
-//   console.log(data)
-// })
-
-auth.get('apps/dev/session', {template: 'default', theme: 'material'}, function(data) {
-  console.log(data)
-})
-
-// import AccountClient  from "../src/account-client"
-
-// const acc = new AccountClient({
-//   baseurl: 'https://account-realm.com'
-// })
-
-// acc.sso()
+acc.sso()

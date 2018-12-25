@@ -5,6 +5,7 @@ const origin = {
   test: 'http://localhost:3300',
 }
 
+const sessions = []
 
 const express = require('express')
 const cookieParser = require('cookie-parser')
@@ -12,6 +13,17 @@ const cookieParser = require('cookie-parser')
 const app = express()
 app.use(cookieParser())
 app.use('/assets', express.static('tests/server'))
+
+app.get('/apps/:app/session/new/:uid', function(req, res) {
+  const uid = req.params.uid
+  const clientId = Math.random().toString(36).substr(2,9)
+  const session = { uid, clientId }
+  sessions.push(session)
+  const cookie = JSON.stringify(session)
+  res.cookie('session', cookie)
+  res.end(`Created new session uid: ${uid}, clientId: ${clientId}`)
+  console.log(`Created new session uid: ${uid}, clientId: ${clientId}`)
+})
 
 app.get('/apps/:app/session', function (req, res) {
   const app = req.params.app

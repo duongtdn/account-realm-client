@@ -5,17 +5,26 @@ const origin = {
   test: 'http://localhost:3300',
 }
 
+
 const express = require('express')
+const cookieParser = require('cookie-parser')
 
 const app = express()
+app.use(cookieParser())
 app.use('/assets', express.static('tests/server'))
 
 app.get('/apps/:app/session', function (req, res) {
   const app = req.params.app
   console.log(`Request from app: ${app}`)
+  const cookies = req.cookies
+  console.log(cookies)  
   res.writeHead( 200, { "Content-Type": "text/html" } );
   if (origin[app]) {
-    res.end(html({targetOrigin: origin[app], status: 200, message: {session:{user: 'awesome', token: 'secret'}}, script: "/assets/client.js"}))
+    if (cookies && cookies.session) {
+      res.end(html({targetOrigin: origin[app], status: 200, message: {session:{user: 'awesome', token: 'secret'}}, script: "/assets/client.js"}))
+    } else {
+      res.end(html({targetOrigin: origin[app], status: 404, message: {error:'nosession'}, script: "/assets/client.js"}))  
+    }    
   } else {
     res.end(html({targetOrigin: origin[app], status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
   } 

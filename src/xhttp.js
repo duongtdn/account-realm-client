@@ -2,10 +2,10 @@
 
 import { isObject, isFunction } from './util'
 
-export function get ({baseurl, path, query, header, done}) {
+export function del ({baseurl, path, query, header, done}) {
   const url = _constructURL(baseurl, path, query)
   const request = new XMLHttpRequest()
-  request.open('GET', url, true)
+  request.open('DELETE', url, true)
   if (header) {
     for (let name in header) {
       request.setRequestHeader(name, header[name]);
@@ -18,6 +18,7 @@ export function get ({baseurl, path, query, header, done}) {
 }
 
 function _constructURL(baseurl, path, query) {
+  path = path.replace(/^\/+|\/+$/gm,'').replace(/\/\//gm,'/')    
   if (isObject(query)) {
     let _query = '?'
     for (let t in query) {

@@ -18,3 +18,11 @@ const acc = new AccountClient({
 })
 
 acc.sso()
+
+// import { del } from "../src/xhttp"
+
+// del({
+//   baseurl: 'http://localhost:3100',
+//   path: '/session',
+//   done: (status, data) => console.log(status + '/' + data)
+// })

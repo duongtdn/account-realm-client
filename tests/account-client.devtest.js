@@ -19,6 +19,8 @@ const acc = new AccountClient({
 
 acc.sso()
 
+// setTimeout(() => acc.signout(), 1000)
+
 // import { del } from "../src/xhttp"
 
 // del({

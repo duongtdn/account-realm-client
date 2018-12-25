@@ -49,6 +49,9 @@ app.get('/:realm/apps/:app/session', function (req, res) {
   
 })
 
+
+/* for unit test */
+
 app.get('/apps/:app/auth-provider-with-query', function (req, res) {
   const app = req.params.app
   res.end(html({targetOrigin: origin[app], status: 200, message: {query: req.query}, script: "/assets/client.js"}))

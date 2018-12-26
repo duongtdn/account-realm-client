@@ -70,8 +70,8 @@ export default class AccountClient {
   }
 
   signup() {
-    this.auth.get('users/new', (err, user) => {
-
+    this.auth.get('users/new', (data) => {
+      console.log(data)
     })
   }
 

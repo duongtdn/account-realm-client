@@ -17,9 +17,14 @@ const acc = new AccountClient({
   baseurl: 'http://localhost:3100'
 })
 
+acc
+  .on('authenticating', () => console.log('authenticating...'))
+  .on('authenticated', user => console.log(`authenticated: user: ${user}`))
+  .on('unauthenticated', () => console.log('unauthenticated'))
+
 acc.sso()
 
-// setTimeout(() => acc.signout(), 1000)
+setTimeout(() => acc.signout(), 1000)
 
 // import { del } from "../src/xhttp"
 

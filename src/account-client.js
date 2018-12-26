@@ -84,21 +84,25 @@ export default class AccountClient {
     if (this.get('sso')) {
       this._clearCookie('session')
     }
+    return this
   }
 
   _setLocalSession(session) {
     this._props.user = session.user
     this._props.token = session.token
+    return this
   }
 
   _setCookie(cname, cvalue, exdays) {
     let expires = exdays ? `expires=${exdays}` : '';
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    return this
   }
 
   _clearCookie(cname) {
     const expires = 'Thu, 01 Jan 1970 00:00:00 UTC';
     this._setCookie(cname, '', expires)
+    return this
   }
 
 }

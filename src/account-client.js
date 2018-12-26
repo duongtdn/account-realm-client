@@ -87,6 +87,12 @@ export default class AccountClient {
     return this
   }
 
+  _clearLocalSession() {
+    this._props.user = undefined
+    this._props.token = undefined
+    return this
+  }
+
   _setLocalSession(session) {
     this._props.user = session.user
     this._props.token = session.token

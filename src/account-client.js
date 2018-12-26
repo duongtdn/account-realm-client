@@ -53,10 +53,12 @@ export default class AccountClient {
   }
 
   sso() {
+    this.emit('authenticating')
     this.set({sso: true}) // enable sso flag sothat single sign-out will be used when user signed out
     this.auth.get(`${this.get('realm')}/apps/${this.get('app')}/session`, (data) => {
       if (data && data.status == 200) {
         this._setLocalSession(data.session)
+        this.emit('authenticated', data.session.user)
         return
       }
       if (data && data.status == 404) {
@@ -84,6 +86,7 @@ export default class AccountClient {
     if (this.get('sso')) {
       this._clearCookie('session')
     }
+    this.emit('unauthenticated')
     return this
   }
 

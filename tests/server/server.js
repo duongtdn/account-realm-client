@@ -11,9 +11,17 @@ const sessions = []
 
 const express = require('express')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 
 const app = express()
+
 app.use(cookieParser())
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 app.use('/assets', express.static('tests/server'))
 
 app.get('/:realm/apps/:app/session/new/:uid', function(req, res) {
@@ -52,6 +60,18 @@ app.get('/:realm/apps/:app/session', function (req, res) {
   
 })
 
+/* get sign up from */
+app.get('/users/new', function(req, res) {
+  console.log('Received request for sign up form')
+  res.writeHead( 200, { "Content-Type": "text/html" } )
+  res.end(html.signup())
+})
+
+/* store signup */
+app.post('/users/new', function(req, res) {
+  console.log(req.body.username + '/' + req.body.password)
+  res.status(200).json({msg: 'success'})
+})
 
 /* for unit test */
 

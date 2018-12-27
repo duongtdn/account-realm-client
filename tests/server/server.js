@@ -30,7 +30,7 @@ app.get('/:realm/apps/:app/session/new/:uid', function(req, res) {
   const session = { uid, clientId }
   sessions.push(session)
   const cookie = JSON.stringify(session)
-  res.cookie('session', cookie)
+  res.cookie('session', cookie, { httpOnly: true }) // secure: true if production
   res.end(`Created new session uid: ${uid}, clientId: ${clientId}`)
   console.log(`Created new session uid: ${uid}, clientId: ${clientId}`)
 })

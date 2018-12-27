@@ -1,17 +1,20 @@
 "use strict"
 
-import AuthProvider  from "../src/auth-provider"
+import Iframe  from "../src/iframe"
 
-const auth = new AuthProvider({
+const iframe = new Iframe({
   baseurl: 'http://localhost:3100'
 })
 
-describe('Test auth-provider.js', () => {
+describe('Test iframe.js', () => {
 
-  describe('Class public methods', function() {
-    describe('method: get', function() {
-      it ('http get with query', function(done) {
-        auth.get('/apps/test/auth-provider-with-query', {t: 'test'}, function(data) {
+
+  describe('Test open iframe', function() {
+    it ('url include query', function(done) {
+      iframe.open({
+        path: '/apps/test/iframe-with-query',
+        query: { t: test },
+        done: (data) => {
           if (data && data.status == 200) {
             if (data.query && data.query.t === 'test') {
               done()
@@ -21,10 +24,13 @@ describe('Test auth-provider.js', () => {
           } else {
             done({error: `expecting status code 200, but received ${status}`})
           }
-        })
-      })  
-      it ('http get without query', function(done) {
-        auth.get('/apps/test/auth-provider-without-query', function(data) {
+        }
+      })
+    })  
+    it ('url not include query', function(done) {
+      iframe.open({
+        path: '/apps/test/iframe-without-query',
+        done: (data) => {
           if (data && data.status == 200) {
             if (data.query === null) {
               done()
@@ -34,9 +40,10 @@ describe('Test auth-provider.js', () => {
           } else {
             done({error: `expecting status code 200, but received ${status}`})
           }
-        })
-      })  
-    })
+        }
+      })
+    })  
   })
+
 
 })

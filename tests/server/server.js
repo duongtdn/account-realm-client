@@ -65,7 +65,7 @@ app.get('/:realm/apps/:app/session', function (req, res) {
   
 })
 
-/* get sign up from */
+/* get sign up form */
 app.get('/users/new', function(req, res) {
   console.log('Received request for sign up form')
   res.writeHead( 200, { "Content-Type": "text/html" } )
@@ -75,7 +75,18 @@ app.get('/users/new', function(req, res) {
 /* store signup */
 app.post('/users/new', function(req, res) {
   console.log(req.body.username + '/' + req.body.password)
-  res.status(200).json({msg: 'success'})
+  const uid = req.body.username
+  users.push({
+    username: req.body.username,
+    password: req.body.password
+  })
+  const clientId = Math.random().toString(36).substr(2,9)
+  const session = { uid, clientId }
+  sessions.push(session)
+  const cookie = JSON.stringify(session)
+  res.cookie('session', cookie)
+  res.end(`Created new user: ${uid} and session with clientId: ${clientId}`)
+  console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })
 
 /* for unit test */

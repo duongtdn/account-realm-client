@@ -1,7 +1,7 @@
 "use strict"
 
 import { isObject } from './util'
-import AuthProvider from './auth-provider'
+import Iframe from './iframe'
 
 export default class AccountClient {
   constructor(props) {
@@ -18,7 +18,7 @@ export default class AccountClient {
     if (!this._props.app) {
       throw new Error('missing prop: app')
     }
-    this.auth = new AuthProvider({ baseurl: this._props.baseurl })
+    this.iframe = new Iframe({ baseurl: this._props.baseurl })
     this._eventHandlers = {}
   }
 
@@ -55,40 +55,70 @@ export default class AccountClient {
   sso() {
     this.emit('authenticating')
     this.set({sso: true}) // enable sso flag sothat single sign-out will be used when user signed out
-    this.auth.get(`${this.get('realm')}/apps/${this.get('app')}/session`, (data) => {
-      if (data && data.status == 200) {
-        this._setLocalSession(data.session)
-        this.emit('authenticated', data.session.user)
-        return
-      }
-      if (data && data.status == 404) {
-        this.signout()
-        return
+    this.iframe.open({
+      path: `${this.get('realm')}/apps/${this.get('app')}/session`,
+      done: (data) => {
+        if (data && data.status == 200) {
+          this._setLocalSession(data.session)
+          this.emit('authenticated', data.session.user)
+          return
+        }
+        if (data && data.status == 404) {
+          this.signout()
+          return
+        }
       }
     })
     return this
   }
 
   signup() {
-    this.auth.get('users/new', (data) => {
-      console.log(data)
+    this.iframe.open({
+      path: `${this.get('realm')}/apps/${this.get('app')}/users/new`,
+      done: (data) => {
+        if (data && data.status == 200) {
+          this._setLocalSession(data.session)
+          this.emit('authenticated', data.session.user)
+          return
+        }
+        if (data && data.status == 404) {
+          this.signout()
+          return
+        }
+      }
     })
+    return this
   }
 
   signin() {
-    this.auth.get('session/new', (err, user) => {
-
+    this.iframe.open({
+      path: `${this.get('realm')}/apps/${this.get('app')}/session/new`,
+      done: (data) => {
+        if (data && data.status == 200) {
+          this._setLocalSession(data.session)
+          this.emit('authenticated', data.session.user)
+          return
+        }
+        if (data && data.status == 404) {
+          this.signout()
+          return
+        }
+      }
     })
+    return this
   }
 
   signout() {
     this._clearLocalSession()
     if (this.get('sso')) {
-      this.auth.get(`${this.get('realm')}/apps/${this.get('app')}/session/clean`, (data) => {
-        if (data && data.status == 200) {
-          this.emit('unauthenticated')
-        } else {
-          throw new Error(data)
+      this.iframe.open({
+        path: `${this.get('realm')}/apps/${this.get('app')}/session/clean`,
+        done: (data) => {
+          if (data && data.status == 200) {
+            this.emit('unauthenticated')
+          } else {
+            throw new Error(data)
+          }
         }
       })
     }

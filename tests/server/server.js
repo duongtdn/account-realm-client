@@ -51,8 +51,13 @@ app.get('/:realm/apps/:app/session', function (req, res) {
   }
   
   const session = JSON.parse(cookies.session)
-  if ( sessions.some(ses => ses.uid === session.uid && ses.clientId === session.clientId) ) {
-    res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: session.uid, token: 'secret'}}, script: "/assets/client.js"}))
+  // if ( sessions.some(ses => ses.uid === session.uid && ses.clientId === session.clientId) ) {
+  //   res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: session.uid, token: 'secret'}}, script: "/assets/client.js"}))
+  // } else {
+  //   // expires session
+  //   res.end(html.sso({targetOrigin: origin[app], status: 404, message: {error:'expired'}, script: "/assets/client.js"}))
+  // }
+  res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: session.uid, token: 'secret'}}, script: "/assets/client.js"}))
   } else {
     // expires session
     res.end(html.sso({targetOrigin: origin[app], status: 404, message: {error:'expired'}, script: "/assets/client.js"}))

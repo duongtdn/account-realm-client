@@ -7,6 +7,7 @@ const origin = {
   test: 'http://localhost:3300',
 }
 
+const users = []
 const sessions = []
 
 const express = require('express')

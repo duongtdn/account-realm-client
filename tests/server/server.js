@@ -101,14 +101,16 @@ app.post('/users/new', function(req, res) {
   console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })
 
+
+
 /* for unit test */
 
-app.get('/apps/:app/auth-provider-with-query', function (req, res) {
+app.get('/apps/:app/iframe-with-query', function (req, res) {
   const app = req.params.app
   res.end(html.sso({targetOrigin: origin[app], status: 200, message: {query: req.query}, script: "/assets/client.js"}))
 })
 
-app.get('/apps/:app/auth-provider-without-query', function (req, res) {
+app.get('/apps/:app/iframe-without-query', function (req, res) {
   const app = req.params.app
   if (req.query && Object.keys(req.query).length > 0) {
     res.end(html.sso({targetOrigin: origin[app], status: 200, message: {query: req.query}, script: "/assets/client.js"}))

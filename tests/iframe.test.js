@@ -13,7 +13,7 @@ describe('Test iframe.js', () => {
     it ('url include query', function(done) {
       iframe.open({
         path: '/apps/test/iframe-with-query',
-        query: { t: test },
+        query: { t: 'test' },
         done: (data) => {
           if (data && data.status == 200) {
             if (data.query && data.query.t === 'test') {

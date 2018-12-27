@@ -84,9 +84,14 @@ export default class AccountClient {
   signout() {
     this._clearLocalSession()
     if (this.get('sso')) {
-      this._clearCookie('session')
+      this.auth.get(`${this.get('realm')}/apps/${this.get('app')}/session/clean`, (data) => {
+        if (data && data.status == 200) {
+          this.emit('unauthenticated')
+        } else {
+          throw new Error(data)
+        }
+      })
     }
-    this.emit('unauthenticated')
     return this
   }
 

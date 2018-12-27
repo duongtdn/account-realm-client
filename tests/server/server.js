@@ -58,11 +58,22 @@ app.get('/:realm/apps/:app/session', function (req, res) {
   //   res.end(html.sso({targetOrigin: origin[app], status: 404, message: {error:'expired'}, script: "/assets/client.js"}))
   // }
   res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: session.uid, token: 'secret'}}, script: "/assets/client.js"}))
-  } else {
-    // expires session
-    res.end(html.sso({targetOrigin: origin[app], status: 404, message: {error:'expired'}, script: "/assets/client.js"}))
+})
+
+/* signout 
+   security? can xxs logout user
+*/
+app.get('/:realm/apps/:app/session/clean', function (req, res) {
+  const app = req.params.app
+  // res.writeHead( 200, { "Content-Type": "text/html" } )
+  if (!origin[app]) {
+    console.log(`app ${app} is not registered`)
+    res.end(html.sso({targetOrigin: origin[app], status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
+    return
   }
-  
+  console.log('clear session cookie')
+  res.clearCookie('session')
+  res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session: null}, script: "/assets/client.js"}))
 })
 
 /* get sign up form */

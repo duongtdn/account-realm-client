@@ -42,7 +42,7 @@ export default class Iframe {
     iframe.setAttribute('id', `__${this.baseurl}__iframe__`)
     if (props) {
       for (let attr in props) {
-        if (key === 'display') { continue }
+        if (attr === 'display') { continue }
         iframe.setAttribute(attr, props[attr])
       }
     }

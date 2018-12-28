@@ -64,7 +64,7 @@ export default class AccountClient {
           return
         }
         if (data && data.status == 404) {
-          this.signout()
+          this.signoutLocally().emit('unauthenticated')
           return
         }
       }
@@ -75,6 +75,7 @@ export default class AccountClient {
   signup() {
     this.iframe.open({
       path: `${this.get('realm')}/apps/${this.get('app')}/users/new`,
+      props: { display: 'block', width: 500, height: 500 },
       done: (data) => {
         if (data && data.status == 200) {
           this._setLocalSession(data.session)
@@ -109,7 +110,7 @@ export default class AccountClient {
   }
 
   signout() {
-    this._clearLocalSession()
+    this.signoutLocally()
     if (this.get('sso')) {
       this.iframe.open({
         path: `${this.get('realm')}/apps/${this.get('app')}/session/clean`,
@@ -122,6 +123,11 @@ export default class AccountClient {
         }
       })
     }
+    return this
+  }
+
+  signoutLocally() {
+    this._clearLocalSession()
     return this
   }
 

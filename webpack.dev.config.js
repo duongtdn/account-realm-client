@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
     entry: {
-      dev: ["./tests/account-client.devtest.js"]
+      dev: ["./tests/account.devtest.js"]
     },
     output: {
       filename: "test.bundle.js",

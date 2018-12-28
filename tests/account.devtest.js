@@ -24,9 +24,9 @@ acc
 
 acc.sso()
 
-setTimeout(() => acc.signout(), 1000)
+// setTimeout(() => acc.signout(), 1000)
 
-// setTimeout(() => acc.signup(), 1000)
+setTimeout(() => acc.signup(), 1000)
 
 // import { del } from "../src/xhttp"
 

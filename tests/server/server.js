@@ -78,14 +78,14 @@ app.get('/:realm/apps/:app/session/clean', function (req, res) {
 })
 
 /* get sign up form */
-app.get('/users/new', function(req, res) {
+app.get('/:realm/apps/:app/users/new', function(req, res) {
   console.log('Received request for sign up form')
   res.writeHead( 200, { "Content-Type": "text/html" } )
   res.end(html.signup())
 })
 
 /* store signup */
-app.post('/users/new', function(req, res) {
+app.post('/:realm/apps/:app/users/new', function(req, res) {
   console.log(req.body.username + '/' + req.body.password)
   const uid = req.body.username
   users.push({
@@ -96,7 +96,7 @@ app.post('/users/new', function(req, res) {
   const session = { uid, clientId }
   sessions.push(session)
   const cookie = JSON.stringify(session)
-  res.cookie('session', cookie)
+  res.cookie('session', cookie, { httpOnly: true })
   res.end(`Created new user: ${uid} and session with clientId: ${clientId}`)
   console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })

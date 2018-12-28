@@ -58,6 +58,7 @@ export default class AccountClient {
     this.iframe.open({
       path: `${this.get('realm')}/apps/${this.get('app')}/session`,
       done: (data) => {
+        this.iframe.close()
         if (data && data.status == 200) {
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
@@ -115,6 +116,7 @@ export default class AccountClient {
       this.iframe.open({
         path: `${this.get('realm')}/apps/${this.get('app')}/session/clean`,
         done: (data) => {
+          this.iframe.close()
           if (data && data.status == 200) {
             this.emit('unauthenticated')
           } else {

@@ -79,10 +79,12 @@ app.get('/:realm/apps/:app/session/clean', function (req, res) {
 
 /* get sign up form */
 app.get('/:realm/apps/:app/users/new', function(req, res) {
-  console.log('Received request for sign up form')
+  const realm = req.params.realm
+  const app = req.params.app
+  console.log(`Received request for sign up form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.signup())
-})
+  res.end(html.signup({realm, app}))
+})  
 
 /* store signup */
 app.post('/:realm/apps/:app/users/new', function(req, res) {

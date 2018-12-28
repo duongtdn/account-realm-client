@@ -39,7 +39,7 @@ const html = {
     `
   },
 
-  signup () {
+  signup ({realm, app}) {
     return `
     <!DOCTYPE html>
     <html>
@@ -63,7 +63,7 @@ const html = {
 
         <h2> Create new account </h2>
     
-        <form action="/users/new" class="w3-container" method="post">
+        <form action="/${realm}/apps/${app}/users/new" class="w3-container" method="post">
           <p>
             <label> Username </label>
             <input class="w3-input " type="text" name="username" placeholder="Please enter username" />

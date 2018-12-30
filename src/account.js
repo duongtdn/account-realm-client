@@ -125,6 +125,8 @@ export default class AccountClient {
           }
         }
       })
+    } else {
+      this.emit('unauthenticated')
     }
     return this
   }

@@ -83,10 +83,10 @@ app.get('/:realm/apps/:app/users/new', function(req, res) {
   const app = req.params.app
   console.log(`Received request for sign up form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.signup({realm, app}))
+  res.end(html.authenForm(`/${realm}/apps/${app}/users/new`))
 })  
 
-/* store signup */
+/* create new user */
 app.post('/:realm/apps/:app/users/new', function(req, res) {
   console.log(req.body.username + '/' + req.body.password)
   const uid = req.body.username
@@ -104,7 +104,33 @@ app.post('/:realm/apps/:app/users/new', function(req, res) {
   console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })
 
+/* get sign in form */
+app.get('/:realm/apps/:app/session/new', function(req, res) {
+  const realm = req.params.realm
+  const app = req.params.app
+  console.log(`Received request for sign in form from ${realm}/${app}`)
+  res.writeHead( 200, { "Content-Type": "text/html" } )
+  res.end(html.authenForm(`/${realm}/apps/${app}/session/new`))
+})
 
+/* create new session for logged user */
+app.post('/:realm/apps/:app/session/new', function(req, res) {
+  console.log(req.body.username + '/' + req.body.password)
+  const uid = req.body.username
+  if (users.some(record => record.username === uid && record.password === req.body.password)) {
+    const clientId = Math.random().toString(36).substr(2,9)
+    const session = { uid, clientId }
+    sessions.push(session)
+    const cookie = JSON.stringify(session)
+    res.cookie('session', cookie, { httpOnly: true })
+    const app = req.params.app
+    res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: uid, token: 'secret'}}, script: "/assets/client.js"}))
+    console.log(`Created new session with clientId: ${clientId} for user: ${uid}`)
+  } else {
+    res.end(html.sso({targetOrigin: origin[app], status: 403, message: {error:'forbidden'}, script: "/assets/client.js"})) 
+    console.log(`Failed to created new session for user: ${uid}. Invalid credential`)
+  }
+})
 
 /* for unit test */
 

@@ -39,7 +39,7 @@ const html = {
     `
   },
 
-  signup ({realm, app}) {
+  authenForm (endpoint) {
     return `
     <!DOCTYPE html>
     <html>
@@ -61,9 +61,9 @@ const html = {
     
       <body>    
 
-        <h2> Create new account </h2>
+        <h2> Create new account / login </h2>
     
-        <form action="/${realm}/apps/${app}/users/new" class="w3-container" method="post">
+        <form action="${endpoint}" class="w3-container" method="post">
           <p>
             <label> Username </label>
             <input class="w3-input " type="text" name="username" placeholder="Please enter username" />

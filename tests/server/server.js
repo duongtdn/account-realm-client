@@ -99,7 +99,8 @@ app.post('/:realm/apps/:app/users/new', function(req, res) {
   sessions.push(session)
   const cookie = JSON.stringify(session)
   res.cookie('session', cookie, { httpOnly: true })
-  res.end(`Created new user: ${uid} and session with clientId: ${clientId}`)
+  const app = req.params.app
+  res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: uid, token: 'secret'}}, script: "/assets/client.js"}))
   console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })
 

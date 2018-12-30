@@ -22,14 +22,23 @@ acc
   .on('authenticated', user => console.log(`authenticated: user: ${user}`))
   .on('unauthenticated', () => console.log('unauthenticated'))
 
-acc.sso()
+document.addEventListener("DOMContentLoaded", (event) => {
+  const btn = ['sso', 'signup', 'signin', 'signout']
+  btn.forEach( fn => $(fn).onclick = function() { acc[fn]() })
+}, false)
 
-setTimeout(() => acc.signout(), 1000)
+function $(id) {
+  return document.getElementById(id)
+} 
+
+// acc.sso()
+
+// setTimeout(() => acc.signout(), 1000)
 
 // what happens if signup or signin even when has signed in
 // setTimeout(() => acc.signup(), 1000)
 
-setTimeout(() => acc.signin(), 1000)
+// setTimeout(() => acc.signin(), 1000)
 
 // import { del } from "../src/xhttp"
 

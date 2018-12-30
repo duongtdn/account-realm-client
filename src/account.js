@@ -97,8 +97,10 @@ export default class AccountClient {
   signin() {
     this.iframe.open({
       path: `${this.get('realm')}/apps/${this.get('app')}/session/new`,
+      props: { display: 'block', width: 500, height: 500 },
       done: (data) => {
         if (data && data.status == 200) {
+          this.iframe.close()
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
           return

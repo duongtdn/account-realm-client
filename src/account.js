@@ -103,8 +103,9 @@ export default class AccountClient {
           this.emit('authenticated', data.session.user)
           return
         }
-        if (data && data.status == 404) {
-          this.signout()
+        /* what to be processed if signin failed? what status code of failure? */
+        if (data && data.status == 403) {
+          this.emit('unauthenticated')
           return
         }
       }

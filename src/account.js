@@ -84,10 +84,11 @@ export default class AccountClient {
           this.emit('authenticated', data.session.user)
           return
         }
-        if (data && data.status == 404) {
-          this.signout()
-          return
-        }
+        /* what to be processed if signup failed? what status code of failure? */
+        // if (data && data.status == 404) {
+        //   this.signout()
+        //   return
+        // }
       }
     })
     return this

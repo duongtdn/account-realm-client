@@ -7,23 +7,32 @@ export default class Iframe {
     this.baseurl = baseurl.replace(/\/+$/,'')
     this._lazyFn = []
     this._done = null
+    this._iframeClosed = true
     document.addEventListener("DOMContentLoaded", (event) => {
       this._domReady = true
       this._lazyFn.forEach(f => f.fn(...f.args))
+      this._lazyFn = []
     }, false)
     window.addEventListener("message", (event) => {
       if (event.origin !== this.baseurl)
         return
       const data = event.data
       this._done && this._done(data)
+      // execute other iframe.open in queue if any
+      if (this._lazyFn.length > 0) {
+        const f = this._lazyFn.pop()
+        f.fn(...f.args)
+      }
     }, false)
   }
 
   open({path, query, props, done}) {   
-    const url = this._constructURL(path, query)
-    console.log(`GET ${url} HTTP / 1.1`) 
-    this._lazyExecute(this._openIframe, url, props)
-    this._done = done  
+    this._lazyExecute(function({path, query, props, done}) {
+      const url = this._constructURL(path, query)
+      console.log(`GET ${url} HTTP / 1.1`)
+      this._openIframe(url, props)
+      this._done = done 
+    }, {path, query, props, done})
   }
 
   close() {
@@ -31,6 +40,7 @@ export default class Iframe {
   }
 
   _openIframe(url, props) {   
+    this._iframeClosed = false
     let div = document.getElementById(`__${this.baseurl}__container__`)
     if (!div) {
       div = document.createElement('div')
@@ -53,11 +63,12 @@ export default class Iframe {
   _closeIframe() {
     const div = document.getElementById(`__${this.baseurl}__container__`)
     div.innerHTML = ''
+    this._iframeClosed = true
   }
 
   _lazyExecute(fn, ...args) {
     fn = fn.bind(this)
-    if (this._domReady) {
+    if (this._domReady && this._iframeClosed) {
       fn(...args)
     } else {
       this._lazyFn.push({fn, args})

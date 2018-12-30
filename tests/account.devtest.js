@@ -24,8 +24,9 @@ acc
 
 acc.sso()
 
-// setTimeout(() => acc.signout(), 1000)
+setTimeout(() => acc.signout(), 1000)
 
+// what happens if signup or signin even when has signed in
 setTimeout(() => acc.signup(), 1000)
 
 // import { del } from "../src/xhttp"

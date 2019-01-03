@@ -56,7 +56,8 @@ export default class AccountClient {
     this.emit('authenticating')
     this.set({sso: true}) // enable sso flag sothat single sign-out will be used when user signed out
     this.iframe.open({
-      path: `${this.get('realm')}/apps/${this.get('app')}/session`,
+      path: '/session',
+      query: { realm: this.get('realm'), app: this.get('app') },
       done: (data) => {
         this.iframe.close()
         if (data && data.status == 200) {
@@ -75,7 +76,8 @@ export default class AccountClient {
 
   signup() {
     this.iframe.open({
-      path: `${this.get('realm')}/apps/${this.get('app')}/users/new`,
+      path: '/users/new',
+      query: { realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block', width: 500, height: 500 },
       done: (data) => {
         this.iframe.close()
@@ -96,7 +98,8 @@ export default class AccountClient {
 
   signin() {
     this.iframe.open({
-      path: `${this.get('realm')}/apps/${this.get('app')}/session/new`,
+      path: '/session/new',
+      query: { realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block', width: 500, height: 500 },
       done: (data) => {
         if (data && data.status == 200) {
@@ -118,7 +121,8 @@ export default class AccountClient {
   signout() {
     if (this.get('sso')) {
       this.iframe.open({
-        path: `${this.get('realm')}/apps/${this.get('app')}/session/clean`,
+        path: '/clean',
+        query: { realm: this.get('realm'), app: this.get('app') },
         done: (data) => {
           this.iframe.close()
           if (data && data.status == 200) {

@@ -39,7 +39,7 @@ const html = {
     `
   },
 
-  authenForm (endpoint) {
+  authenForm (endpoint, {realm, app}) {
     return `
     <!DOCTYPE html>
     <html>
@@ -72,6 +72,8 @@ const html = {
             <label> Password </label>
             <input class="w3-input " type="password" name="password" placeholder="Please enter password" />
           </p>
+          <input type="hidden" name="realm" value="${realm}" />
+          <input type="hidden" name="app" value="${app}" />
           
           <input type="submit" value="Submit" class="w3-button w3-blue" />
         </form>

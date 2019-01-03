@@ -37,9 +37,16 @@ app.get('/:realm/apps/:app/session/new/:uid', function(req, res) {
 })
 
 /* sso */
-app.get('/:realm/apps/:app/session', function (req, res) {
-  const app = req.params.app
+app.get('/session', function (req, res) {
+  if (!(req.query && req.query.realm && req.query.app)) {
+    console.log('Request error: missing realm or app in query')
+    res.end(html.sso({targetOrigin: undefined, status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
+    return
+  }
+  const realm = req.query.realm
+  const app = req.query.app
   console.log(`Request from app: ${app}`)
+  console.log(req.query)
   const cookies = req.cookies  
   res.writeHead( 200, { "Content-Type": "text/html" } )
   if (!origin[app]) {
@@ -64,9 +71,14 @@ app.get('/:realm/apps/:app/session', function (req, res) {
 /* signout 
    security? can xxs logout user
 */
-app.get('/:realm/apps/:app/session/clean', function (req, res) {
-  const app = req.params.app
-  // res.writeHead( 200, { "Content-Type": "text/html" } )
+app.get('/clean', function (req, res) {
+  if (!(req.query && req.query.realm && req.query.app)) {
+    console.log('Request error: missing realm or app in query')
+    res.end(html.sso({targetOrigin: undefined, status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
+    return
+  }
+  const realm = req.query.realm
+  const app = req.query.app
   if (!origin[app]) {
     console.log(`app ${app} is not registered`)
     res.end(html.sso({targetOrigin: origin[app], status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
@@ -78,16 +90,24 @@ app.get('/:realm/apps/:app/session/clean', function (req, res) {
 })
 
 /* get sign up form */
-app.get('/:realm/apps/:app/users/new', function(req, res) {
-  const realm = req.params.realm
-  const app = req.params.app
+app.get('/users/new', function(req, res) {
+  if (!(req.query && req.query.realm && req.query.app)) {
+    console.log('Request error: missing realm or app in query')
+    res.end(html.sso({targetOrigin: undefined, status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
+    return
+  }
+  const realm = req.query.realm
+  const app = req.query.app
   console.log(`Received request for sign up form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.authenForm(`/${realm}/apps/${app}/users/new`))
+  res.end(html.authenForm('/users', {realm, app}))
 })  
 
 /* create new user */
-app.post('/:realm/apps/:app/users/new', function(req, res) {
+app.post('/users', function(req, res) {
+  const realm = req.body.realm
+  const app = req.body.app
+  console.log(`Request from ${realm}/${app}. Creating new user`)
   console.log(req.body.username + '/' + req.body.password)
   const uid = req.body.username
   users.push({
@@ -99,22 +119,29 @@ app.post('/:realm/apps/:app/users/new', function(req, res) {
   sessions.push(session)
   const cookie = JSON.stringify(session)
   res.cookie('session', cookie, { httpOnly: true })
-  const app = req.params.app
   res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: uid, token: 'secret'}}, script: "/assets/client.js"}))
   console.log(`Created new user: ${uid} and session with clientId: ${clientId}`)
 })
 
 /* get sign in form */
-app.get('/:realm/apps/:app/session/new', function(req, res) {
-  const realm = req.params.realm
-  const app = req.params.app
+app.get('/session/new', function(req, res) {
+  if (!(req.query && req.query.realm && req.query.app)) {
+    console.log('Request error: missing realm or app in query')
+    res.end(html.sso({targetOrigin: undefined, status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))
+    return
+  }
+  const realm = req.query.realm
+  const app = req.query.app
   console.log(`Received request for sign in form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.authenForm(`/${realm}/apps/${app}/session/new`))
+  res.end(html.authenForm('/session', {realm, app}))
 })
 
 /* create new session for logged user */
-app.post('/:realm/apps/:app/session/new', function(req, res) {
+app.post('/session', function(req, res) {
+  const realm = req.body.realm
+  const app = req.body.app
+  console.log(`Request from ${realm}/${app}. Creating new session for user ${req.body.username}`)
   console.log(req.body.username + '/' + req.body.password)
   const uid = req.body.username
   if (users.some(record => record.username === uid && record.password === req.body.password)) {
@@ -123,7 +150,6 @@ app.post('/:realm/apps/:app/session/new', function(req, res) {
     sessions.push(session)
     const cookie = JSON.stringify(session)
     res.cookie('session', cookie, { httpOnly: true })
-    const app = req.params.app
     res.end(html.sso({targetOrigin: origin[app], status: 200, message: {session:{user: uid, token: 'secret'}}, script: "/assets/client.js"}))
     console.log(`Created new session with clientId: ${clientId} for user: ${uid}`)
   } else {

@@ -54,7 +54,6 @@ export default class AccountClient {
 
   sso() {
     this.emit('authenticating')
-    this.set({sso: true}) // enable sso flag sothat single sign-out will be used when user signed out
     this.iframe.open({
       path: '/session',
       query: { realm: this.get('realm'), app: this.get('app') },
@@ -119,22 +118,18 @@ export default class AccountClient {
   }
 
   signout() {
-    if (this.get('sso')) {
-      this.iframe.open({
-        path: '/clean',
-        query: { realm: this.get('realm'), app: this.get('app') },
-        done: (data) => {
-          this.iframe.close()
-          if (data && data.status == 200) {
-            this.signoutLocally()
-          } else {
-            throw new Error(data)
-          }
+    this.iframe.open({
+      path: '/clean',
+      query: { realm: this.get('realm'), app: this.get('app') },
+      done: (data) => {
+        this.iframe.close()
+        if (data && data.status == 200) {
+          this.signoutLocally()
+        } else {
+          throw new Error(data)
         }
-      })
-    } else {
-      this.signoutLocally()
-    }
+      }
+    })
     return this
   }
 

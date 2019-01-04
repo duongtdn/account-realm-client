@@ -11,28 +11,28 @@ if (args.length > 0) {
 
 const done = {
   sso(status, user) {
-    if (user) {
+    if (status === 200) {
       console.log(`sign-in user: ${user}`)
     } else {
       console.log('no sign-in user')
     }
   },
   lso(status, user) {
-    if (user) {
+    if (status === 200) {
       console.log(`sign-in user: ${user}`)
     } else {
       console.log('no sign-in user')
     }
   },
   signup(status, user) {
-    if (user) {
+    if (status === 200) {
       console.log(`sign-in user: ${user}`)
     } else {
       console.log('no sign-in user')
     }
   },
   signin(status, user) {
-    if (user) {
+    if (status === 200) {
       console.log(`sign-in user: ${user}`)
     } else {
       console.log('no sign-in user')

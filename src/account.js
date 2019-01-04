@@ -3,6 +3,8 @@
 import { isObject } from './util'
 import Iframe from './iframe'
 
+const SESSION = 'SESSION'
+
 export default class AccountClient {
   constructor(props) {
     this._props = {
@@ -136,6 +138,21 @@ export default class AccountClient {
   signoutLocally() {
     this._clearLocalSession()
     this.emit('unauthenticated')
+    return this
+  }
+
+  lso() {
+    if (typeof(Storage) === "undefined") {
+      // Sorry! No Web Storage support..
+      throw new Error("No Web Storage support")
+    }
+    const session = JSON.parse(localStorage.getItem(SESSION))
+    if (session && session.user && session.token) {
+      this.set({ ...session })
+      this.emit('authenticated', session.user)
+    } else {
+      this.emit('unauthenticated')
+    }
     return this
   }
 

@@ -145,7 +145,7 @@ export default class AccountClient {
       // Sorry! No Web Storage support..
       throw new Error("No Web Storage support")
     }
-    localStorage.removeItem('SESSION');
+    localStorage.removeItem(SESSION);
     return this
   }
 
@@ -155,7 +155,7 @@ export default class AccountClient {
       // Sorry! No Web Storage support..
       throw new Error("No Web Storage support")
     }
-    localStorage.setItem('SESSION', JSON.stringify(session));
+    localStorage.setItem(SESSION, JSON.stringify(session));
     return this
   }
 

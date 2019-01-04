@@ -9,6 +9,42 @@ if (args.length > 0) {
 }
 
 
+const done = {
+  sso(status, user) {
+    if (user) {
+      console.log(`sign-in user: ${user}`)
+    } else {
+      console.log('no sign-in user')
+    }
+  },
+  lso(status, user) {
+    if (user) {
+      console.log(`sign-in user: ${user}`)
+    } else {
+      console.log('no sign-in user')
+    }
+  },
+  signup(status, user) {
+    if (user) {
+      console.log(`sign-in user: ${user}`)
+    } else {
+      console.log('no sign-in user')
+    }
+  },
+  signin(status, user) {
+    if (user) {
+      console.log(`sign-in user: ${user}`)
+    } else {
+      console.log('no sign-in user')
+    }
+  },
+  signout(status, user) {
+    if (status === 200) {
+      console.log(`signed-out user`)
+    }
+  }
+}
+
 import AccountClient  from "../src/account"
 
 const acc = new AccountClient({
@@ -24,7 +60,7 @@ acc
 
 document.addEventListener("DOMContentLoaded", (event) => {
   const btn = ['sso', 'lso', 'signup', 'signin', 'signout']
-  btn.forEach( fn => $(fn).onclick = function() { acc[fn]() })
+  btn.forEach( fn => $(fn).onclick = function() { acc[fn](done[fn]) })
 }, false)
 
 function $(id) {

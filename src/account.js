@@ -54,7 +54,7 @@ export default class AccountClient {
     return this
   }
 
-  sso() {
+  sso(done) {
     this.emit('authenticating')
     this.iframe.open({
       path: '/session',
@@ -64,10 +64,12 @@ export default class AccountClient {
         if (data && data.status == 200) {
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
+          done & done(200, data.session.user)
           return
         }
         if (data && data.status == 404) {
           this.signoutLocally()
+          done & done(404, null)
           return
         }
       }
@@ -75,7 +77,7 @@ export default class AccountClient {
     return this
   }
 
-  signup() {
+  signup(done) {
     this.iframe.open({
       path: '/users/new',
       query: { realm: this.get('realm'), app: this.get('app') },
@@ -85,6 +87,7 @@ export default class AccountClient {
         if (data && data.status == 200) {
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
+          done & done(200, data.session.user)
           return
         }
         /* what to be processed if signup failed? what status code of failure? */
@@ -97,7 +100,7 @@ export default class AccountClient {
     return this
   }
 
-  signin() {
+  signin(done) {
     this.iframe.open({
       path: '/session/new',
       query: { realm: this.get('realm'), app: this.get('app') },
@@ -107,11 +110,13 @@ export default class AccountClient {
           this.iframe.close()
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
+          done & done(200, data.session.user)
           return
         }
         /* what to be processed if signin failed? what status code of failure? */
         if (data && data.status == 403) {
           this.emit('unauthenticated')
+          done & done(403, data.session.user)
           return
         }
       }
@@ -119,7 +124,7 @@ export default class AccountClient {
     return this
   }
 
-  signout() {
+  signout(done) {
     this.iframe.open({
       path: '/clean',
       query: { realm: this.get('realm'), app: this.get('app') },
@@ -127,6 +132,7 @@ export default class AccountClient {
         this.iframe.close()
         if (data && data.status == 200) {
           this.signoutLocally()
+          done & done(200, null)
         } else {
           throw new Error(data)
         }
@@ -141,7 +147,7 @@ export default class AccountClient {
     return this
   }
 
-  lso() {
+  lso(done) {
     if (typeof(Storage) === "undefined") {
       // Sorry! No Web Storage support..
       throw new Error("No Web Storage support")
@@ -150,8 +156,10 @@ export default class AccountClient {
     if (session && session.user && session.token) {
       this.set({ ...session })
       this.emit('authenticated', session.user)
+      done & done(200, session.user)
     } else {
       this.emit('unauthenticated')
+      done & done(404, null)
     }
     return this
   }

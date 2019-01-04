@@ -56,9 +56,11 @@ export default class AccountClient {
 
   sso(done) {
     this.emit('authenticating')
+    this._setTimeout(done)
     this.iframe.open({
       path: '/session',
       query: { realm: this.get('realm'), app: this.get('app') },
+      onLoaded: () => this._clearTimeout(),
       done: (data) => {
         this.iframe.close()
         if (data && data.status == 200) {
@@ -78,10 +80,12 @@ export default class AccountClient {
   }
 
   signup(done) {
+    this._setTimeout(done)
     this.iframe.open({
       path: '/users/new',
       query: { realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block', width: 500, height: 500 },
+      onLoaded: () => this._clearTimeout(),
       done: (data) => {
         this.iframe.close()
         if (data && data.status == 200) {
@@ -101,10 +105,12 @@ export default class AccountClient {
   }
 
   signin(done) {
+    this._setTimeout(done)
     this.iframe.open({
       path: '/session/new',
       query: { realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block', width: 500, height: 500 },
+      onLoaded: () => this._clearTimeout(),
       done: (data) => {
         if (data && data.status == 200) {
           this.iframe.close()
@@ -125,9 +131,11 @@ export default class AccountClient {
   }
 
   signout(done) {
+    this._setTimeout(done)
     this.iframe.open({
       path: '/clean',
       query: { realm: this.get('realm'), app: this.get('app') },
+      onLoaded: () => this._clearTimeout(),
       done: (data) => {
         this.iframe.close()
         if (data && data.status == 200) {
@@ -182,6 +190,19 @@ export default class AccountClient {
     }
     localStorage.setItem(SESSION, JSON.stringify(session));
     return this
+  }
+
+  _setTimeout(done) {
+    // TImeout code: 503 Service Unavailable
+    const timeout = this.get('timeout') || 2000
+    this._to = setTimeout(() => {
+      this.iframe.close()
+      done & done(503, null)
+    }, timeout) 
+  }
+
+  _clearTimeout() {
+    clearTimeout(this._to)
   }
 
   /* in future, set local cookie may be needed for server-side rendering */

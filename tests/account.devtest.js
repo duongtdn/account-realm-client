@@ -11,36 +11,77 @@ if (args.length > 0) {
 
 const done = {
   sso(status, user) {
-    if (status === 200) {
-      console.log(`sign-in user: ${user}`)
-    } else {
-      console.log('no sign-in user')
+    switch (status) {
+      case 200:
+        console.log(`sign-in user: ${user}`)
+        break
+      case 404:
+        console.log('no sign-in user')
+        break
+      case 503:
+        console.log(`Network timeout: Service unavailable`)
+        break
+      default:
+        console.log(`Unexpected return code: ${status}`)
+        break
     }
   },
   lso(status, user) {
-    if (status === 200) {
-      console.log(`sign-in user: ${user}`)
-    } else {
-      console.log('no sign-in user')
+    switch (status) {
+      case 200:
+        console.log(`sign-in user: ${user}`)
+        break
+      case 404:
+        console.log('no sign-in user')
+        break
+      default:
+        console.log(`Unexpected return code: ${status}`)
+        break
     }
   },
   signup(status, user) {
-    if (status === 200) {
-      console.log(`sign-in user: ${user}`)
-    } else {
-      console.log('no sign-in user')
+    switch (status) {
+      case 200:
+        console.log(`sign-in user: ${user}`)
+        break
+      case 404:
+        console.log('no sign-in user')
+        break
+      case 503:
+        console.log(`Network timeout: Service unavailable`)
+        break
+      default:
+        console.log(`Unexpected return code: ${status}`)
+        break
     }
   },
   signin(status, user) {
-    if (status === 200) {
-      console.log(`sign-in user: ${user}`)
-    } else {
-      console.log('no sign-in user')
+    switch (status) {
+      case 200:
+        console.log(`sign-in user: ${user}`)
+        break
+      case 403:
+        console.log('no sign-in user')
+        break
+      case 503:
+        console.log(`Network timeout: Service unavailable`)
+        break
+      default:
+        console.log(`Unexpected return code: ${status}`)
+        break
     }
   },
   signout(status, user) {
-    if (status === 200) {
-      console.log(`signed-out user`)
+    switch (status) {
+      case 200:
+        console.log(`user has signed out`)
+        break
+      case 503:
+        console.log(`Network timeout: Service unavailable`)
+        break
+      default:
+        console.log(`Unexpected return code: ${status}`)
+        break
     }
   }
 }

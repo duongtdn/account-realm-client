@@ -100,7 +100,7 @@ app.get('/users/new', function(req, res) {
   const app = req.query.app
   console.log(`Received request for sign up form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.authenForm('/users', {realm, app}))
+  res.end(html.authenForm('/users', {realm, app}, '/assets/form.js'))
 })  
 
 /* create new user */
@@ -134,7 +134,7 @@ app.get('/session/new', function(req, res) {
   const app = req.query.app
   console.log(`Received request for sign in form from ${realm}/${app}`)
   res.writeHead( 200, { "Content-Type": "text/html" } )
-  res.end(html.authenForm('/session', {realm, app}))
+  res.end(html.authenForm('/session', {realm, app}, '/assets/form.js'))
 })
 
 /* create new session for logged user */

@@ -39,7 +39,7 @@ const html = {
     `
   },
 
-  authenForm (endpoint, {realm, app}) {
+  authenForm (endpoint, {realm, app}, script) {
     return `
     <!DOCTYPE html>
     <html>
@@ -52,6 +52,8 @@ const html = {
         <title>Accounts</title>      
            
         <link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
+
+        <script type="text/javascript" src="${script}" ></script>
     
         <style>
     

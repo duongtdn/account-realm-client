@@ -7,6 +7,7 @@ export default class Iframe {
     this.baseurl = baseurl.replace(/\/+$/,'')
     this._lazyFn = []
     this._done = null
+    this._onIframeLoaded = null
     this._iframeClosed = true
     document.addEventListener("DOMContentLoaded", (event) => {
       this._domReady = true
@@ -17,20 +18,34 @@ export default class Iframe {
       if (event.origin !== this.baseurl)
         return
       const data = event.data
-      this._done && this._done(data)
-      // execute other iframe.open in queue if any
-      if (this._lazyFn.length > 0) {
-        const f = this._lazyFn.pop()
-        f.fn(...f.args)
+      /* iframe loaded */
+      if (data.code === 'iframe.loaded') {
+        this._onIframeLoaded && this._onIframeLoaded()
+        return
+      }
+      /* iframe close command */
+      if (data.code === 'iframe.loaded') {
+        this._closeIframe()
+        return
+      }
+      /* iframe finish all processing */
+      if (data.code === 'iframe.done') {
+        this._done && this._done(data)
+        // execute other iframe.open in queue if any
+        if (this._lazyFn.length > 0) {
+          const f = this._lazyFn.pop()
+          f.fn(...f.args)
+        }
       }
     }, false)
   }
 
-  open({path, query, props, done}) {   
+  open({path, query, props, onLoaded, done}) {   
     this._lazyExecute(function({path, query, props, done}) {
       const url = this._constructURL(path, query)
       console.log(`GET ${url} HTTP / 1.1`)
       this._openIframe(url, props)
+      this._onIframeLoaded = onLoaded
       this._done = done 
     }, {path, query, props, done})
   }

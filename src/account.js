@@ -141,23 +141,21 @@ export default class AccountClient {
 
   _clearLocalSession() {
     this.set({ user: undefined, token: undefined })
-    if (typeof(Storage) !== "undefined") {
-      localStorage.removeItem('SESSION');
-    } else {
+    if (typeof(Storage) === "undefined") {
       // Sorry! No Web Storage support..
-      throw new Error("No Web Storage support") 
+      throw new Error("No Web Storage support")
     }
+    localStorage.removeItem('SESSION');
     return this
   }
 
   _setLocalSession(session) {
     this.set({ ...session })    // {user, token}
-    if (typeof(Storage) !== "undefined") {
-      localStorage.setItem('SESSION', JSON.stringify(session));
-    } else {
+    if (typeof(Storage) === "undefined") {
       // Sorry! No Web Storage support..
-      throw new Error("No Web Storage support") 
+      throw new Error("No Web Storage support")
     }
+    localStorage.setItem('SESSION', JSON.stringify(session));
     return this
   }
 

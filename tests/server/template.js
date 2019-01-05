@@ -64,7 +64,7 @@ const html = {
       <body class="w3-container">    
 
         <header className="w3-container "> 
-          <span onClick="close()" class="w3-button w3-right w3-red">&times;</span>
+          <span onclick="xclose()" class="w3-button w3-right w3-red">&times;</span>
           <h2 class="w3-text-green" style="fontWeight: bold" > ${title} </h2>
         </header>
     
@@ -82,7 +82,7 @@ const html = {
           
           <input type="submit" value="Submit" class="w3-button w3-blue" />
         </form>
-    
+        
       </body>
     
     </html>

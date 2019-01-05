@@ -14,3 +14,8 @@ function postMessage(code) {
     target.postMessage(msg, '*')
   }
 }
+
+function xclose() {
+  console.log('Closing...')
+  postMessage('iframe.close')
+}

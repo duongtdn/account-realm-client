@@ -72,6 +72,7 @@ export default class Iframe {
       }
     }
     iframe.style.display = props && props.display ? props.display : 'none'
+    iframe.style.border = 'none'
     div.appendChild(iframe)
   }
 

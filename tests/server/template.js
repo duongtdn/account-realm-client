@@ -39,7 +39,7 @@ const html = {
     `
   },
 
-  authenForm (endpoint, {realm, app}, script) {
+  authenForm (title, endpoint, {realm, app}, script) {
     return `
     <!DOCTYPE html>
     <html>
@@ -61,18 +61,21 @@ const html = {
     
       </head>
     
-      <body>    
+      <body class="w3-container">    
 
-        <h2> Create new account / login </h2>
+        <header className="w3-container "> 
+          <span onClick="close()" class="w3-button w3-right w3-red">&times;</span>
+          <h2 class="w3-text-green" style="fontWeight: bold" > ${title} </h2>
+        </header>
     
-        <form action="${endpoint}" class="w3-container" method="post">
+        <form action="${endpoint}" method="post">
           <p>
             <label> Username </label>
-            <input class="w3-input " type="text" name="username" placeholder="Please enter username" />
+            <input class="w3-input w3-border" type="text" name="username" placeholder="Please enter username" />
           </p>
           <p>
             <label> Password </label>
-            <input class="w3-input " type="password" name="password" placeholder="Please enter password" />
+            <input class="w3-input w3-border" type="password" name="password" placeholder="Please enter password" />
           </p>
           <input type="hidden" name="realm" value="${realm}" />
           <input type="hidden" name="app" value="${app}" />

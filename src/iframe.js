@@ -24,7 +24,7 @@ export default class Iframe {
         return
       }
       /* iframe close command */
-      if (data.code === 'iframe.loaded') {
+      if (data.code === 'iframe.close') {
         this._closeIframe()
         return
       }

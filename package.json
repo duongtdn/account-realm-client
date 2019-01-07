@@ -2,7 +2,7 @@
   "name": "account-realm-client",
   "version": "1.0.0",
   "description": "client side scripts to authenticate with account-realm provider",
-  "main": "src/index.js",
+  "main": "dist/account.js",
   "scripts": {
     "clearn": "rm -rf dist/",
     "build": "npm run clearn && babel src --out-dir dist --source-maps",

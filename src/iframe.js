@@ -56,27 +56,38 @@ export default class Iframe {
 
   _openIframe(url, props) {   
     this._iframeClosed = false
+    /* create root container if not created */
     let div = document.getElementById(`__${this.baseurl}__container__`)
     if (!div) {
       div = document.createElement('div')
       div.setAttribute('id', `__${this.baseurl}__container__`)
       document.getElementsByTagName('body')[0].appendChild(div)
     }
+    /* create iframe */
     const iframe = document.createElement('iframe')
     iframe.src = url
     iframe.setAttribute('id', `__${this.baseurl}__iframe__`)
     if (props) {
       for (let attr in props) {
         if (attr === 'display') { continue }
-        iframe.setAttribute(attr, props[attr])
+        iframe.style[attr] = props[attr]
       }
     }
     iframe.style.display = props && props.display ? props.display : 'none'
     iframe.style.border = 'none'
+    iframe.style.margin = '45px auto'
     iframe.style.width = '100%'
     iframe.style.height = '100%'
-    iframe.style.position = 'absolute'
-    div.appendChild(iframe)
+    /* create wrapper for iframe */
+    const wrapper = document.createElement('div')
+    wrapper.style.position = 'fixed'
+    wrapper.style.width = '100%'
+    wrapper.style.height = '100%'
+    wrapper.style.top = 0
+    wrapper.style['background-color'] = 'rgba(0,0,0,0.5)'
+    /* append child to parent */
+    wrapper.appendChild(iframe)
+    div.appendChild(wrapper)
   }
 
   _closeIframe() {

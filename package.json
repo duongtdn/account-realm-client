@@ -1,11 +1,11 @@
 {
   "name": "account-realm-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "client side scripts to authenticate with account-realm provider",
   "main": "dist/account.js",
   "scripts": {
     "clearn": "rm -rf dist/",
-    "build": "npm run clearn && babel src --out-dir dist --source-maps",
+    "build": "babel src --out-dir dist --source-maps",
     "test": "webpack-dev-server --config webpack.tests.config.js  --port 3300 --host 0.0.0.0 --watch-poll",
     "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",
     "server": "node tests/server/server"

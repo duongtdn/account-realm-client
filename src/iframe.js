@@ -73,6 +73,9 @@ export default class Iframe {
     }
     iframe.style.display = props && props.display ? props.display : 'none'
     iframe.style.border = 'none'
+    iframe.style.width = '100%'
+    iframe.style.height = '100%'
+    iframe.style.position = 'absolute'
     div.appendChild(iframe)
   }
 

@@ -84,7 +84,7 @@ export default class AccountClient {
     this.iframe.open({
       path: '/users/new',
       query: { realm: this.get('realm'), app: this.get('app') },
-      props: { display: 'block', width: 500, height: 500 },
+      props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
         this.iframe.close()
@@ -109,7 +109,7 @@ export default class AccountClient {
     this.iframe.open({
       path: '/session/new',
       query: { realm: this.get('realm'), app: this.get('app') },
-      props: { display: 'block', width: 500, height: 500 },
+      props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
         if (data && data.status == 200) {

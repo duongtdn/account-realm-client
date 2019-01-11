@@ -87,7 +87,7 @@ export default class AccountClient {
       props: { display: 'block', 'max-height': '615px', 'max-width': '460px' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
-        this.iframe.close()
+        // this.iframe.close()
         if (data && data.status == 200) {
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)

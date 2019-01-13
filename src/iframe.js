@@ -84,7 +84,9 @@ export default class Iframe {
     wrapper.style.width = '100%'
     wrapper.style.height = '100%'
     wrapper.style.top = 0
-    wrapper.style['background-color'] = 'rgba(0,0,0,0.5)'
+    if (props && props.display) {
+      wrapper.style['background-color'] = 'rgba(0,0,0,0.5)'
+    }
     /* append child to parent */
     wrapper.appendChild(iframe)
     div.appendChild(wrapper)

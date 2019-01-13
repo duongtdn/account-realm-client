@@ -133,7 +133,7 @@ export default class AccountClient {
   signout(done) {
     this._setTimeout(done)
     this.iframe.open({
-      path: '/clean',
+      path: '/session/clean',
       query: { realm: this.get('realm'), app: this.get('app') },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {

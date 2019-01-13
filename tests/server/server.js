@@ -71,7 +71,7 @@ app.get('/session', function (req, res) {
 /* signout 
    security? can xxs logout user
 */
-app.get('/clean', function (req, res) {
+app.get('/session/clean', function (req, res) {
   if (!(req.query && req.query.realm && req.query.app)) {
     console.log('Request error: missing realm or app in query')
     res.end(html.sso({targetOrigin: undefined, status: 403, message: {error:'noapp'}, script: "/assets/client.js"}))

@@ -64,15 +64,17 @@ export default class AccountClient {
       done: (data) => {
         this.iframe.close()
         if (data && data.status == 200) {
-          this._setLocalSession(data.session)
-          this.emit('authenticated', data.session.user)
-          done & done(200, data.session.user)
-          return
-        }
-        if (data && data.status == 404) {
-          this.signoutLocally()
-          done & done(404, null)
-          return
+          if (data.session && data.session.user && data.session.token) {
+            this._setLocalSession(data.session)
+            this.emit('authenticated', data.session.user)
+            done & done(200, data.session.user)
+            return
+          }
+          if (data.session === null) {
+            this.signoutLocally()
+            done & done(404, null)
+            return
+          }
         }
       }
     })

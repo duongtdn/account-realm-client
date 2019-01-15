@@ -111,7 +111,7 @@ export default class AccountClient {
     this.iframe.open({
       path: '/session/new',
       query: { realm: this.get('realm'), app: this.get('app') },
-      props: { display: 'block' },
+      props: { display: 'block', 'max-height': '415px', 'max-width': '460px' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
         if (data && data.status == 200) {

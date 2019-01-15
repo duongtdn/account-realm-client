@@ -86,7 +86,7 @@ export default class AccountClient {
     this.iframe.open({
       path: '/users/new',
       query: { realm: this.get('realm'), app: this.get('app') },
-      props: { display: 'block', 'max-height': '615px', 'max-width': '460px' },
+      props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
         // this.iframe.close()
@@ -111,11 +111,11 @@ export default class AccountClient {
     this.iframe.open({
       path: '/session/new',
       query: { realm: this.get('realm'), app: this.get('app') },
-      props: { display: 'block', 'max-height': '415px', 'max-width': '460px' },
+      props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
         if (data && data.status == 200) {
-          this.iframe.close()
+          // this.iframe.close()
           this._setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
           done & done(200, data.session.user)

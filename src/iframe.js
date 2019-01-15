@@ -9,6 +9,7 @@ export default class Iframe {
     this._done = null
     this._onIframeLoaded = null
     this._iframeClosed = true
+    this._iframe = null
     document.addEventListener("DOMContentLoaded", (event) => {
       this._domReady = true
       this._lazyFn.forEach(f => f.fn(...f.args))
@@ -20,6 +21,8 @@ export default class Iframe {
       const data = event.data
       /* iframe loaded */
       if (data.code === 'iframe.loaded') {
+        this._iframe.style['height'] = data.height + 'px'
+        this._iframe.style['width'] = data.width + 'px'
         this._onIframeLoaded && this._onIframeLoaded()
         return
       }
@@ -76,8 +79,8 @@ export default class Iframe {
     iframe.style.display = props && props.display ? props.display : 'none'
     iframe.style.border = 'none'
     iframe.style.margin = '45px auto'
-    iframe.style.width = '100%'
-    iframe.style.height = '100%'
+    iframe.style.width = 0
+    iframe.style.height = 0
     /* create wrapper for iframe */
     const wrapper = document.createElement('div')
     wrapper.style.position = 'fixed'
@@ -90,12 +93,14 @@ export default class Iframe {
     /* append child to parent */
     wrapper.appendChild(iframe)
     div.appendChild(wrapper)
+    this._iframe = iframe
   }
 
   _closeIframe() {
     const div = document.getElementById(`__${this.baseurl}__container__`)
     div.innerHTML = ''
     this._iframeClosed = true
+    this._iframe = null
   }
 
   _lazyExecute(fn, ...args) {

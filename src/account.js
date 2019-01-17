@@ -84,8 +84,8 @@ export default class AccountClient {
   signup(done) {
     this._setTimeout(done)
     this.iframe.open({
-      path: '/users/new',
-      query: { realm: this.get('realm'), app: this.get('app') },
+      path: '/form',
+      query: { name: 'signup', realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {
@@ -109,8 +109,8 @@ export default class AccountClient {
   signin(done) {
     this._setTimeout(done)
     this.iframe.open({
-      path: '/session/new',
-      query: { realm: this.get('realm'), app: this.get('app') },
+      path: '/form',
+      query: { name: 'signin', realm: this.get('realm'), app: this.get('app') },
       props: { display: 'block' },
       onLoaded: () => this._clearTimeout(),
       done: (data) => {

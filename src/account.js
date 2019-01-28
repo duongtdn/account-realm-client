@@ -65,7 +65,7 @@ export default class AccountClient {
         this.iframe.close()
         if (data && data.status == 200) {
           if (data.session && data.session.user && data.session.token) {
-            this._setLocalSession(data.session)
+            this.setLocalSession(data.session)
             this.emit('authenticated', data.session.user)
             done && done(200, data.session.user)
             return
@@ -91,7 +91,7 @@ export default class AccountClient {
       done: (data) => {
         // this.iframe.close()
         if (data && data.status == 200) {
-          this._setLocalSession(data.session)
+          this.setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
           done && done(200, data.session.user)
           return
@@ -116,7 +116,7 @@ export default class AccountClient {
       done: (data) => {
         if (data && data.status == 200) {
           // this.iframe.close()
-          this._setLocalSession(data.session)
+          this.setLocalSession(data.session)
           this.emit('authenticated', data.session.user)
           done && done(200, data.session.user)
           return
@@ -152,7 +152,7 @@ export default class AccountClient {
   }
 
   signoutLocally() {
-    this._clearLocalSession()
+    this.clearLocalSession()
     this.emit('unauthenticated')
     return this
   }
@@ -174,7 +174,7 @@ export default class AccountClient {
     return this
   }
 
-  _clearLocalSession() {
+  clearLocalSession() {
     this.set({ user: undefined, token: undefined })
     if (typeof(Storage) === "undefined") {
       // Sorry! No Web Storage support..
@@ -184,7 +184,7 @@ export default class AccountClient {
     return this
   }
 
-  _setLocalSession(session) {
+  setLocalSession(session) {
     this.set({ ...session })    // {user, token}
     if (typeof(Storage) === "undefined") {
       // Sorry! No Web Storage support..
@@ -192,6 +192,20 @@ export default class AccountClient {
     }
     localStorage.setItem(SESSION, JSON.stringify(session));
     return this
+  }
+
+  getLocalSession() {
+    if (typeof(Storage) === "undefined") {
+      // Sorry! No Web Storage support..
+      throw new Error("No Web Storage support")
+    }
+    return JSON.parse(localStorage.getItem(SESSION))
+  }
+
+  updateLocalSession(key, data) {
+    const session = this.getLocalSession()
+    session[key] = data
+    this.setLocalSession(session)
   }
 
   _setTimeout(done) {

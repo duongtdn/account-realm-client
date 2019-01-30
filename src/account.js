@@ -22,6 +22,9 @@ export default class AccountClient {
     }
     this.iframe = new Iframe({ baseurl: this._props.baseurl })
     this._eventHandlers = {}
+    /* in case these methods are called by an event such as onClick, need to remain 'this' context */
+    const fn = ['sso', 'lso', 'signup', 'signin', 'signout', 'signoutLocally']
+    fn.forEach(method => this[method] = this[method].bind(this))
   }
 
   get(prop) {

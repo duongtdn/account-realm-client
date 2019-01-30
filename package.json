@@ -7,7 +7,7 @@
     "clean": "rm -rf dist/",
     "build": "babel src --out-dir dist --source-maps",
     "test": "webpack-dev-server --config webpack.tests.config.js  --port 3300 --host 0.0.0.0 --watch-poll",
-    "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",    
+    "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",
     "server": "node tests/server/server",
     "prepare": "npm run clean & npm run build"
   },
@@ -27,8 +27,8 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
+    "@babel/preset-env": "^7.3.1",
     "babel-loader": "^8.0.5",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
@@ -36,7 +36,7 @@
     "express": "^4.16.4",
     "mocha": "^5.2.0",
     "mocha-loader": "^2.0.0",
-    "webpack": "^4.28.3",
+    "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
   }

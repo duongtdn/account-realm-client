@@ -1,6 +1,6 @@
 {
   "name": "account-realm-client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "client side scripts to authenticate with account-realm provider",
   "main": "dist/account.js",
   "scripts": {

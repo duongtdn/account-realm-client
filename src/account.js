@@ -209,6 +209,7 @@ export default class AccountClient {
     const session = this.getLocalSession()
     session[key] = data
     this.setLocalSession(session)
+    return this
   }
 
   _setTimeout(done) {

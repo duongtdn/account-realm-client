@@ -4,11 +4,12 @@
   "description": "client side scripts to authenticate with account-realm provider",
   "main": "dist/account.js",
   "scripts": {
-    "clearn": "rm -rf dist/",
+    "clean": "rm -rf dist/",
     "build": "babel src --out-dir dist --source-maps",
     "test": "webpack-dev-server --config webpack.tests.config.js  --port 3300 --host 0.0.0.0 --watch-poll",
-    "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",
-    "server": "node tests/server/server"
+    "dev": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",    
+    "server": "node tests/server/server",
+    "prepare": "npm run clean & npm run build"
   },
   "repository": {
     "type": "git",

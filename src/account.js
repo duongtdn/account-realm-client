@@ -75,7 +75,7 @@ export default class AccountClient {
           }
           if (data.session === null) {
             this.signoutLocally()
-            this.emit('authenticated')
+            this.emit('unauthenticated')
             done && done(404, undefined)
             return
           }

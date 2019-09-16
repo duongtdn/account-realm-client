@@ -22,7 +22,8 @@ export default class Iframe {
       /* iframe loaded */
       if (data.code === 'iframe.loaded') {
         this._iframe.style['height'] = data.height + 'px'
-        this._iframe.style['width'] = data.width + 'px'
+        this._iframe.style['width'] = '95%'
+        this._iframe.style['max-width'] = data.width + 'px'
         this._onIframeLoaded && this._onIframeLoaded()
         return
       }
@@ -91,6 +92,9 @@ export default class Iframe {
     if (props && props.display) {
       wrapper.style['background-color'] = 'rgba(0,0,0,0.5)'
     }
+    /* allow iframe to be scrolled */
+    wrapper.style['-webkit-overflow-scrolling'] = 'touch';
+    wrapper.style['overflow-y'] = 'scroll';
     /* append child to parent */
     wrapper.appendChild(iframe)
     div.appendChild(wrapper)
